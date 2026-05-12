@@ -35,7 +35,7 @@ config:
 
 secret:
   jwtSecret: ""
-  dbJdbcUrl: jdbc:postgresql://postgresql.database.svc.cluster.local:5432/prod_project_db
+  dbUrl: jdbc:postgresql://postgresql.database.svc.cluster.local:5432/prod_project_db
   dbUsername: postgres
   dbPassword: catalogue_postgres
 
