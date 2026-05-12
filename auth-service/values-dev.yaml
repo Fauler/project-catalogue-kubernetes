@@ -30,7 +30,7 @@ serviceMonitor:
   interval: 15s
 
 config:
-  springProfile: dev
+  springProfile: prod
   userServiceUrl: http://user-service.catalogue-dev.svc.cluster.local:8081
   jwtExpirationMs: "86400000"
   allowedClientIds: "client-user-01,client-admin-01"
