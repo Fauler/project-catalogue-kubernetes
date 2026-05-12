@@ -37,5 +37,5 @@ config:
   adminClientIds: "client-admin-01"
 
 secret:
-  jwtSecret: ""
+  jwtSecret: bXktc3VwZXItc2VjcmV0LWtleS1mb3ItcHJvZC1lbnZpcm9ubWVudC0xMjM0NTY3ODk=
 
