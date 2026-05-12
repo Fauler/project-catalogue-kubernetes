@@ -1,0 +1,40 @@
+replicaCount: 1
+
+image:
+  repository: project-catalogue-user-service
+  tag: latest
+  pullPolicy: Never
+
+containerPort: 8081
+
+service:
+  port: 8081
+
+probes:
+  path: /actuator/health
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 300m
+    memory: 256Mi
+
+serviceAccount:
+  create: true
+
+serviceMonitor:
+  enabled: true
+  path: /actuator/prometheus
+  interval: 15s
+
+config:
+  springProfile: dev
+
+secret:
+  jwtSecret: bXktc3VwZXItc2VjcmV0LWtleS1mb3ItZGV2LWVudmlyb25tZW50LTEyMzQ1Njc4OQ==
+  dbJdbcUrl: jdbc:postgresql://postgresql.database.svc.cluster.local:5432/dev_user_db
+  dbUsername: postgres
+  dbPassword: catalogue_postgres
+

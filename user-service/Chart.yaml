@@ -1,0 +1,7 @@
+apiVersion: v2
+name: user-service
+description: User management service for project-catalogue
+version: 0.1.0
+appVersion: "0.0.1-SNAPSHOT"
+type: application
+

@@ -1,0 +1,19 @@
+### Helm ###
+*.tgz
+charts/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
+
+### OS ###
+.DS_Store
+
+### Environment ###
+.env
+

@@ -1,0 +1,7 @@
+apiVersion: v2
+name: auth-service
+description: Authentication service for project-catalogue
+version: 0.1.0
+appVersion: "0.0.1-SNAPSHOT"
+type: application
+

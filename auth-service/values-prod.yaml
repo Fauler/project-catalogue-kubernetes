@@ -1,0 +1,41 @@
+replicaCount: 2
+
+image:
+  repository: project-catalogue-auth-service
+  tag: latest
+  pullPolicy: Never
+
+containerPort: 8083
+
+service:
+  port: 8083
+
+probes:
+  path: /actuator/health
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+serviceAccount:
+  create: true
+
+serviceMonitor:
+  enabled: true
+  path: /actuator/prometheus
+  interval: 15s
+
+config:
+  springProfile: prod
+  userServiceUrl: http://user-service.catalogue-prod.svc.cluster.local:8081
+  jwtExpirationMs: "86400000"
+  allowedClientIds: "client-user-01,client-admin-01"
+  adminClientIds: "client-admin-01"
+
+secret:
+  jwtSecret: ""
+
