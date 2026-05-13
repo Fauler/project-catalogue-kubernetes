@@ -1,0 +1,35 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: jvm-gc-pressure-{{ .Values.environment }}
+  namespace: {{ .Values.namespace }}
+spec:
+  groups:
+    - name: catalogue-jvm-gc
+      rules:
+        - alert: HighGCPauseTime
+          expr: |
+            (rate(jvm_gc_pause_seconds_sum{
+              namespace="{{ .Values.namespace }}"
+            }[5m]) /
+            rate(jvm_gc_pause_seconds_count{
+              namespace="{{ .Values.namespace }}"
+            }[5m])) > 0.2
+          for: 10m
+          annotations:
+            summary: "GC pause time above 200ms for {{ "{{ $labels.pod }}" }}"
+          labels:
+            severity: warning
+            environment: {{ .Values.environment }}
+        - alert: FrequentGarbageCollection
+          expr: |
+            rate(jvm_gc_pause_seconds_count{
+              namespace="{{ .Values.namespace }}"
+            }[5m]) > 2
+          for: 10m
+          annotations:
+            summary: "More than 2 GC/sec for {{ "{{ $labels.pod }}" }}"
+          labels:
+            severity: warning
+            environment: {{ .Values.environment }}
+

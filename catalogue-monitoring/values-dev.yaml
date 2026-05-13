@@ -1,0 +1,11 @@
+environment: dev
+namespace: catalogue-dev
+
+services:
+  - name: auth-service-dev
+    pod: "auth-service-dev-.*"
+  - name: user-service-dev
+    pod: "user-service-dev-.*"
+  - name: project-service-dev
+    pod: "project-service-dev-.*"
+

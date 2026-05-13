@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: pod-restarts-{{ .Values.environment }}
+  namespace: {{ .Values.namespace }}
+spec:
+  groups:
+    - name: catalogue-pod-restarts
+      rules:
+        - alert: PodRestartedMoreThanOnce
+          expr: |
+            sum by(pod) (
+              delta(kube_pod_container_status_restarts_total{
+                namespace="{{ .Values.namespace }}"
+              }[30m])
+            ) >= 2
+          for: 1m
+          annotations:
+            summary: "Pod {{ "{{ $labels.pod }}" }} restarted more than once in 30m"
+          labels:
+            severity: warning
+            environment: {{ .Values.environment }}
+
