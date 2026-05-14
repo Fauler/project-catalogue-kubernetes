@@ -160,6 +160,38 @@ data:
               "custom": { "drawStyle": "line", "fillOpacity": 10 }
             }
           }
+        },
+        {
+          "title": "Business Metrics",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 32 },
+          "targets": [
+            {
+              "expr": "users_created_total{namespace=\"{{ .Values.namespace }}\"}",
+              "legendFormat": "Users Created",
+              "datasource": { "type": "prometheus", "uid": "prometheus" }
+            },
+            {
+              "expr": "users_deleted_total{namespace=\"{{ .Values.namespace }}\"}",
+              "legendFormat": "Users Deleted",
+              "datasource": { "type": "prometheus", "uid": "prometheus" }
+            },
+            {
+              "expr": "projects_added_total{namespace=\"{{ .Values.namespace }}\"}",
+              "legendFormat": "Projects Added",
+              "datasource": { "type": "prometheus", "uid": "prometheus" }
+            },
+            {
+              "expr": "projects_removed_total{namespace=\"{{ .Values.namespace }}\"}",
+              "legendFormat": "Projects Removed",
+              "datasource": { "type": "prometheus", "uid": "prometheus" }
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            }
+          }
         }
       ],
       "schemaVersion": 39,
