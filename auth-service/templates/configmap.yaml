@@ -10,4 +10,5 @@ data:
   JWT_EXPIRATION_MS: {{ .Values.config.jwtExpirationMs | quote }}
   ALLOWED_CLIENT_IDS: {{ .Values.config.allowedClientIds | quote }}
   ADMIN_CLIENT_IDS: {{ .Values.config.adminClientIds | quote }}
+  MANAGEMENT_OTLP_TRACING_ENDPOINT: {{ .Values.config.otlpEndpoint | default "http://tempo.monitoring.svc.cluster.local:4318/v1/traces" | quote }}
 

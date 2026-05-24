@@ -6,4 +6,5 @@ metadata:
     {{- include "user-service.labels" . | nindent 4 }}
 data:
   SPRING_PROFILES_ACTIVE: {{ .Values.config.springProfile | quote }}
+  MANAGEMENT_OTLP_TRACING_ENDPOINT: {{ .Values.config.otlpEndpoint | default "http://tempo.monitoring.svc.cluster.local:4318/v1/traces" | quote }}
 

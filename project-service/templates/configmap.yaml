@@ -7,4 +7,5 @@ metadata:
 data:
   SPRING_PROFILES_ACTIVE: {{ .Values.config.springProfile | quote }}
   USER_SERVICE_URL: {{ .Values.config.userServiceUrl | quote }}
+  MANAGEMENT_OTLP_TRACING_ENDPOINT: {{ .Values.config.otlpEndpoint | default "http://tempo.monitoring.svc.cluster.local:4318/v1/traces" | quote }}
 
