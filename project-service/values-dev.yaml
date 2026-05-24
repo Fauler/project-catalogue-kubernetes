@@ -15,11 +15,11 @@ probes:
 
 resources:
   requests:
-    cpu: 50m
-    memory: 128Mi
-  limits:
-    cpu: 300m
+    cpu: 100m
     memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
 
 serviceAccount:
   create: true
@@ -30,11 +30,11 @@ serviceMonitor:
   interval: 15s
 
 config:
-  springProfile: prod
-  userServiceUrl: http://user-service.catalogue-dev.svc.cluster.local:8081
+  springProfile: dev
+  userServiceUrl: http://user-service-dev.catalogue-dev.svc.cluster.local:8081
 
 secret:
-  jwtSecret: bXktc3VwZXItc2VjcmV0LWtleS1mb3ItZGV2LWVudmlyb25tZW50LTEyMzQ1Njc4OQ==
+  jwtSecret: bXktand0U2VjcmV0LWZvci1kZXYtZW52aXJvbm1lbnQtcG9ydHVnYWwtbGlzYm9hLTIwMjY=
   dbUrl: jdbc:postgresql://postgresql.database.svc.cluster.local:5432/dev_project_db
   dbUsername: postgres
   dbPassword: catalogue_postgres

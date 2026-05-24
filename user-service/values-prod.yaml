@@ -15,11 +15,11 @@ probes:
 
 resources:
   requests:
-    cpu: 100m
-    memory: 256Mi
+    cpu: 150m
+    memory: 384Mi
   limits:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 750m
+    memory: 768Mi
 
 serviceAccount:
   create: true
@@ -33,7 +33,7 @@ config:
   springProfile: prod
 
 secret:
-  jwtSecret: bXktc3VwZXItc2VjcmV0LWtleS1mb3ItcHJvZC1lbnZpcm9ubWVudC0xMjM0NTY3ODk=
+  jwtSecret: bXktand0U2VjcmV0LWZvci1wcm9kLWVudmlyb25tZW50LXBvcnR1Z2FsLWxpc2JvYS0yMDI2
   dbUrl: jdbc:postgresql://postgresql.database.svc.cluster.local:5432/prod_user_db
   dbUsername: postgres
   dbPassword: catalogue_postgres
