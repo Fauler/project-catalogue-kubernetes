@@ -49,7 +49,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "sum(users_created_total{namespace=\"{{ .Values.namespace }}\"})",
+              "expr": "sum(users_total{namespace=\"{{ .Values.namespace }}\"})",
               "legendFormat": "Users created",
               "refId": "A"
             },
