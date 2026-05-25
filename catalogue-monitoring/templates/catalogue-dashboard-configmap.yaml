@@ -9,7 +9,20 @@ data:
   catalogue-dashboard.json: |-
     {
       "annotations": {
-        "list": []
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
       },
       "editable": true,
       "fiscalYearStartMonth": 0,
@@ -17,188 +30,348 @@ data:
       "links": [],
       "panels": [
         {
-          "title": "HTTP Request Rate",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
-          "targets": [
-            {
-              "expr": "sum by(uri, method) (rate(http_server_requests_seconds_count{namespace=\"{{ .Values.namespace }}\"}[5m]))",
-              "legendFormat": "{{ "{{method}}" }} {{ "{{uri}}" }}",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "unit": "reqps",
-              "custom": { "drawStyle": "line", "fillOpacity": 10 }
-            }
-          }
-        },
-        {
-          "title": "HTTP Error Rate (5xx)",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
-          "targets": [
-            {
-              "expr": "sum by(uri) (rate(http_server_requests_seconds_count{namespace=\"{{ .Values.namespace }}\", status=~\"5..\"}[5m]))",
-              "legendFormat": "{{ "{{uri}}" }}",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "unit": "reqps",
-              "custom": { "drawStyle": "line", "fillOpacity": 10 },
-              "color": { "mode": "fixed", "fixedColor": "red" }
-            }
-          }
-        },
-        {
-          "title": "Response Time p95",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
-          "targets": [
-            {
-              "expr": "histogram_quantile(0.95, sum by(le, uri) (rate(http_server_requests_seconds_bucket{namespace=\"{{ .Values.namespace }}\"}[5m])))",
-              "legendFormat": "{{ "{{uri}}" }}",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "unit": "s",
-              "custom": { "drawStyle": "line", "fillOpacity": 10 }
-            }
-          }
-        },
-        {
-          "title": "Response Time p50",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
-          "targets": [
-            {
-              "expr": "histogram_quantile(0.50, sum by(le, uri) (rate(http_server_requests_seconds_bucket{namespace=\"{{ .Values.namespace }}\"}[5m])))",
-              "legendFormat": "{{ "{{uri}}" }}",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "unit": "s",
-              "custom": { "drawStyle": "line", "fillOpacity": 10 }
-            }
-          }
-        },
-        {
-          "title": "JVM Heap Used",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
-          "targets": [
-            {
-              "expr": "jvm_memory_used_bytes{namespace=\"{{ .Values.namespace }}\", area=\"heap\"} / 1024 / 1024",
-              "legendFormat": "{{ "{{pod}}" }}",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "unit": "decmbytes",
-              "custom": { "drawStyle": "line", "fillOpacity": 10 }
-            }
-          }
-        },
-        {
-          "title": "JVM GC Pause Time",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
-          "targets": [
-            {
-              "expr": "rate(jvm_gc_pause_seconds_sum{namespace=\"{{ .Values.namespace }}\"}[5m]) / rate(jvm_gc_pause_seconds_count{namespace=\"{{ .Values.namespace }}\"}[5m])",
-              "legendFormat": "{{ "{{pod}}" }} {{ "{{cause}}" }}",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "unit": "s",
-              "custom": { "drawStyle": "line", "fillOpacity": 10 }
-            }
-          }
-        },
-        {
-          "title": "Pod Restarts",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
-          "targets": [
-            {
-              "expr": "sum by(pod) (increase(kube_pod_container_status_restarts_total{namespace=\"{{ .Values.namespace }}\"}[1h]))",
-              "legendFormat": "{{ "{{pod}}" }}",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "unit": "short",
-              "custom": { "drawStyle": "bars", "fillOpacity": 50 }
-            }
-          }
-        },
-        {
-          "title": "CPU Usage",
-          "type": "timeseries",
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
-          "targets": [
-            {
-              "expr": "rate(container_cpu_usage_seconds_total{namespace=\"{{ .Values.namespace }}\", container!=\"\"}[5m])",
-              "legendFormat": "{{ "{{pod}}" }}",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "unit": "short",
-              "custom": { "drawStyle": "line", "fillOpacity": 10 }
-            }
-          }
-        },
-        {
-          "title": "Business Metrics",
-          "type": "stat",
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 32 },
-          "targets": [
-            {
-              "expr": "users_created_total{namespace=\"{{ .Values.namespace }}\"}",
-              "legendFormat": "Users Created",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            },
-            {
-              "expr": "users_deleted_total{namespace=\"{{ .Values.namespace }}\"}",
-              "legendFormat": "Users Deleted",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            },
-            {
-              "expr": "projects_added_total{namespace=\"{{ .Values.namespace }}\"}",
-              "legendFormat": "Projects Added",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            },
-            {
-              "expr": "projects_removed_total{namespace=\"{{ .Values.namespace }}\"}",
-              "legendFormat": "Projects Removed",
-              "datasource": { "type": "prometheus", "uid": "prometheus" }
-            }
-          ],
           "fieldConfig": {
             "defaults": {
               "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 9,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(users_created_total{namespace=\"{{ .Values.namespace }}\"})",
+              "legendFormat": "Users created",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(users_deleted_total{namespace=\"{{ .Values.namespace }}\"})",
+              "legendFormat": "Users Deleted",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(projects_added_total{namespace=\"{{ .Values.namespace }}\"})",
+              "legendFormat": "Projects Added",
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(projects_removed_total{namespace=\"{{ .Values.namespace }}\"})",
+              "legendFormat": "Projects Removed",
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(tokens_issued_total{namespace=\"{{ .Values.namespace }}\"})",
+              "legendFormat": "Tokens issued",
+              "refId": "E"
             }
-          }
+          ],
+          "title": "Business Metrics",
+          "type": "stat"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "line",
+                "fillOpacity": 10
+              },
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
+          "id": 1,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum by(uri, method) (rate(http_server_requests_seconds_count{namespace=\"{{ .Values.namespace }}\"}[5m]))",
+              "legendFormat": "{{ "{{method}}" }} {{ "{{uri}}" }}",
+              "refId": "A"
+            }
+          ],
+          "title": "HTTP Request Rate",
+          "type": "timeseries"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "red",
+                "mode": "fixed"
+              },
+              "custom": {
+                "drawStyle": "line",
+                "fillOpacity": 10
+              },
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 8
+          },
+          "id": 2,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum by(uri) (rate(http_server_requests_seconds_count{namespace=\"{{ .Values.namespace }}\", status=~\"5..\"}[5m]))",
+              "legendFormat": "{{ "{{uri}}" }}",
+              "refId": "A"
+            }
+          ],
+          "title": "HTTP Error Rate (5xx)",
+          "type": "timeseries"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "line",
+                "fillOpacity": 10
+              },
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 16
+          },
+          "id": 3,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "histogram_quantile(0.95, sum by(le, uri) (rate(http_server_requests_seconds_bucket{namespace=\"{{ .Values.namespace }}\"}[5m])))",
+              "legendFormat": "{{ "{{uri}}" }}",
+              "refId": "A"
+            }
+          ],
+          "title": "Response Time p95",
+          "type": "timeseries"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "line",
+                "fillOpacity": 10
+              },
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 16
+          },
+          "id": 4,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "histogram_quantile(0.50, sum by(le, uri) (rate(http_server_requests_seconds_bucket{namespace=\"{{ .Values.namespace }}\"}[5m])))",
+              "legendFormat": "{{ "{{uri}}" }}",
+              "refId": "A"
+            }
+          ],
+          "title": "Response Time p50",
+          "type": "timeseries"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "line",
+                "fillOpacity": 10
+              },
+              "unit": "decmbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 24
+          },
+          "id": 5,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "jvm_memory_used_bytes{namespace=\"{{ .Values.namespace }}\", area=\"heap\"} / 1024 / 1024",
+              "legendFormat": "{{ "{{pod}}" }}",
+              "refId": "A"
+            }
+          ],
+          "title": "JVM Heap Used",
+          "type": "timeseries"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "line",
+                "fillOpacity": 10
+              },
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 24
+          },
+          "id": 6,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "rate(jvm_gc_pause_seconds_sum{namespace=\"{{ .Values.namespace }}\"}[5m]) / rate(jvm_gc_pause_seconds_count{namespace=\"{{ .Values.namespace }}\"}[5m])",
+              "legendFormat": "{{ "{{pod}}" }} {{ "{{cause}}" }}",
+              "refId": "A"
+            }
+          ],
+          "title": "JVM GC Pause Time",
+          "type": "timeseries"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "bars",
+                "fillOpacity": 50
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 32
+          },
+          "id": 7,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum by(pod) (increase(kube_pod_container_status_restarts_total{namespace=\"{{ .Values.namespace }}\"}[1h]))",
+              "legendFormat": "{{ "{{pod}}" }}",
+              "refId": "A"
+            }
+          ],
+          "title": "Pod Restarts",
+          "type": "timeseries"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "line",
+                "fillOpacity": 10
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 32
+          },
+          "id": 8,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "rate(container_cpu_usage_seconds_total{namespace=\"{{ .Values.namespace }}\", container!=\"\"}[5m])",
+              "legendFormat": "{{ "{{pod}}" }}",
+              "refId": "A"
+            }
+          ],
+          "title": "CPU Usage",
+          "type": "timeseries"
         }
       ],
-      "schemaVersion": 39,
-      "tags": ["catalogue", "{{ .Values.environment }}"],
-      "templating": { "list": [] },
-      "time": { "from": "now-1h", "to": "now" },
+      "refresh": "",
+      "schemaVersion": 42,
+      "tags": [
+        "catalogue",
+        "{{ .Values.environment }}"
+      ],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-1h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
       "title": "Project Catalogue - {{ .Values.environment }}",
+      "weekStart": "",
+      "version": 3,
       "uid": "catalogue-{{ .Values.environment }}"
     }
 
