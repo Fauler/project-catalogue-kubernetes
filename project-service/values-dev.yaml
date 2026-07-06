@@ -32,6 +32,9 @@ serviceMonitor:
 config:
   springProfile: dev
   userServiceUrl: http://user-service-dev.catalogue-dev.svc.cluster.local:8081
+  kafkaBootstrapServers: kafka.messaging.svc.cluster.local:9092
+  userDeletedTopic: dev.user.deleted
+  kafkaConsumerGroupId: project-service-dev
 
 secret:
   jwtSecret: bXktand0U2VjcmV0LWZvci1kZXYtZW52aXJvbm1lbnQtcG9ydHVnYWwtbGlzYm9hLTIwMjY=

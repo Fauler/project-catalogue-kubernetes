@@ -31,6 +31,8 @@ serviceMonitor:
 
 config:
   springProfile: dev
+  kafkaBootstrapServers: kafka.messaging.svc.cluster.local:9092
+  userDeletedTopic: dev.user.deleted
 
 secret:
   jwtSecret: bXktand0U2VjcmV0LWZvci1kZXYtZW52aXJvbm1lbnQtcG9ydHVnYWwtbGlzYm9hLTIwMjY=

@@ -7,5 +7,8 @@ metadata:
 data:
   SPRING_PROFILES_ACTIVE: {{ .Values.config.springProfile | quote }}
   USER_SERVICE_URL: {{ .Values.config.userServiceUrl | quote }}
+  KAFKA_BOOTSTRAP_SERVERS: {{ .Values.config.kafkaBootstrapServers | quote }}
+  USER_DELETED_TOPIC: {{ .Values.config.userDeletedTopic | quote }}
+  SPRING_KAFKA_CONSUMER_GROUP_ID: {{ .Values.config.kafkaConsumerGroupId | quote }}
   MANAGEMENT_OTLP_TRACING_ENDPOINT: {{ .Values.config.otlpEndpoint | default "http://tempo.monitoring.svc.cluster.local:4318/v1/traces" | quote }}
 
